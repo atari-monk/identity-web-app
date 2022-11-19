@@ -1,3 +1,4 @@
+using Connection.Builder;
 using Identity.WebApp.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -24,11 +25,8 @@ public class IdentityConfig
 
     private void SetIdentityDb()
     {
-        var connectionString = builder.Configuration.GetConnectionString("IdentityDataContextConnection")
-                    ?? throw new InvalidOperationException("Connection string 'IdentityDataContextConnection' not found.");
-
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(connectionString));
+            options.UseSqlServer(new ConnectionBuilder(builder, "IdentityDb").LocalDbConnectionString));
     }
 
     private void SetDefaultIdentity()
