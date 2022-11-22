@@ -8,10 +8,12 @@ namespace Identity.WebApp.Config;
 public class IdentityConfig
 {
     private readonly WebApplicationBuilder builder;
+    private readonly bool production;
 
-    public IdentityConfig(WebApplicationBuilder builder)
+    public IdentityConfig(WebApplicationBuilder builder, bool production = true)
     {
         this.builder = builder;
+        this.production = production;
     }
 
     public void RegisterServices()
@@ -25,8 +27,13 @@ public class IdentityConfig
 
     private void SetIdentityDb()
     {
-        builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(new LocalTrustedConnectionBuilder("IdentityDb").GetDbConnectionString()));
+        if(production == true){
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(new ProductionConnectionBuilder(builder).GetDbConnectionString()));
+        } else {
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(new LocalTrustedConnectionBuilder("IdentityDb").GetDbConnectionString()));
+        }
     }
 
     private void SetDefaultIdentity()

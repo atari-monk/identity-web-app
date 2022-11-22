@@ -1,7 +1,7 @@
 using Identity.WebApp.Config;
 
 var builder = WebApplication.CreateBuilder(args);
-new IdentityConfig(builder).RegisterServices();
+new IdentityConfig(builder, production: true).RegisterServices();
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddControllersWithViews();
 
