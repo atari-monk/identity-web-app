@@ -26,7 +26,7 @@ public class IdentityConfig
     private void SetIdentityDb()
     {
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(new ConnectionBuilder(builder, "IdentityDb").LocalDbConnectionString));
+            options.UseSqlServer(new LocalTrustedConnectionBuilder("IdentityDb").GetDbConnectionString()));
     }
 
     private void SetDefaultIdentity()
